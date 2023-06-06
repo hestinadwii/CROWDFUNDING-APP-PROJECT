@@ -44,6 +44,7 @@ dependencies:
   flutter_svg: ^1.0.3
   flutter_swiper: ^1.1.6
   intl: ^0.18.1
+  givestarreviews: ^1.0.2
   fancy_snackbar:
     git:
       url: https://github.com/MR0100/fancy_snackbar.git

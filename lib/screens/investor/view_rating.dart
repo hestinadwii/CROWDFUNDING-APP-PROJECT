@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:p2p/constant/color_constant.dart';
+import 'package:p2p/constants/color_constant.dart';
 import 'package:givestarreviews/givestarreviews.dart';
-import 'package:p2p/investor/give_rating.dart';
+import 'package:p2p/screens/investor/give_rating.dart';
 
 // void main() => runApp(view_rating());
 

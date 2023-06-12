@@ -1,10 +1,10 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:p2p/constant/color_constant.dart';
-import 'package:p2p/peminjam/homePeminjam.dart';
-import 'package:p2p/peminjam/pengajuanPendanaan.dart';
-import 'package:p2p/peminjam/profile.dart';
+import 'package:p2p/constants/color_constant.dart';
+import 'package:p2p/screens/peminjam/homePeminjam.dart';
+import 'package:p2p/screens/peminjam/pengajuanPendanaan.dart';
+import 'package:p2p/screens/peminjam/profile.dart';
 
 class HomepagePeminjam extends StatefulWidget {
   @override

@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:p2p/peminjam/HomeScreen.dart';
+import 'package:p2p/screens/peminjam/HomeScreen.dart';
 
 class Success extends StatefulWidget {
   const Success({super.key});

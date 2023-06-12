@@ -1,10 +1,10 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:p2p/investor/HomeScreen.dart';
+import 'package:p2p/screens/investor/HomeScreen.dart';
 import 'package:givestarreviews/givestarreviews.dart';
-import 'package:p2p/investor/view_rating.dart';
-import 'package:p2p/constant/color_constant.dart';
+import 'package:p2p/screens/investor/view_rating.dart';
+import 'package:p2p/constants/color_constant.dart';
 
 
 class giveRating extends StatefulWidget {

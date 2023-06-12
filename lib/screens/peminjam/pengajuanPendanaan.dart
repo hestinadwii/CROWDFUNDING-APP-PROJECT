@@ -3,9 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 //import 'package:libphonenumber/libphonenumber.dart';
-import 'package:p2p/peminjam/currency.dart';
-import 'package:p2p/constant/color_constant.dart'; 
-import 'package:p2p/peminjam/successPage.dart';
+import 'package:p2p/screens/peminjam/currency.dart';
+import 'package:p2p/constants/color_constant.dart'; 
+import 'package:p2p/screens/peminjam/successPage.dart';
 //import 'package:intl/intl.dart';
 
 class PengajuanPendanaan extends StatefulWidget {

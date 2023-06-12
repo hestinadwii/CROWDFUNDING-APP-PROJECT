@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:p2p/constant/color_constant.dart';
-import 'package:p2p/investor/Withdraw.dart';
+import 'package:p2p/constants/color_constant.dart';
+import 'package:p2p/screens/investor/Withdraw.dart';
 
 // import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 

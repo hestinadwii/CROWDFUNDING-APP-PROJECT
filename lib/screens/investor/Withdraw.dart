@@ -2,9 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:p2p/constant/color_constant.dart'; 
-import 'package:p2p/investor/successPageWithdraw.dart'; 
-import 'package:p2p/peminjam/Currency.dart'; 
+import 'package:p2p/constants/color_constant.dart'; 
+import 'package:p2p/screens/investor/successPageWithdraw.dart'; 
+import 'package:p2p/screens/peminjam/Currency.dart'; 
 import 'package:flutter_svg/flutter_svg.dart';
 
 class Withdraw extends StatefulWidget {

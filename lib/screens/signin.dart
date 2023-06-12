@@ -12,6 +12,8 @@ import 'package:p2p/screens/home_screen_visitor.dart';
 import 'package:p2p/screens/sign_up.dart';
 // import 'package:here_sdk/core.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
+import 'package:p2p/screens/peminjam/HomeScreen.dart';
+import 'package:p2p/screens/investor/HomeScreen.dart';
 
 var loginResult = Login();
 
@@ -92,12 +94,11 @@ class _LoginPage extends State<LoginPage> {
               padding: EdgeInsets.only(top: 30),
               // padding: EdgeInsets.all(50),
               child: Center(
-                heightFactor: 0.1,
+                  heightFactor: 0.1,
                   child: Image.asset(
-                'assets/images/Logo.png',
-                height: (windowHeight - _loginHeight) - 100,
-                
-              ))),
+                    'assets/images/Logo.png',
+                    height: (windowHeight - _loginHeight) - 100,
+                  ))),
           Container(
             // margin: EdgeInsets.only(top: 100),
             padding: EdgeInsets.all(32),
@@ -176,38 +177,57 @@ class _LoginPage extends State<LoginPage> {
                 Column(
                   children: <Widget>[
                     InkWell(
-                      onTap: () {
-                        print("DATA NIH yaaaa");
-                        EasyLoading.show(status: 'loading...');
-                        //print("Nama =" + emailController.text);
-                        Login.connectToApi(phoneLoginController.text,
-                                passwordLoginController.text)
-                            .then((value) {
-                          loginResult = value;
-                          setState(() {
-                            //print(storage.read(key: "token"));
-                            if (loginResult.status == 200) {
-                              _addNewItem("token", loginResult.token);
-                              _addNewItem(
-                                  "password", passwordLoginController.text);
-                              Navigator.pushReplacement(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return NavigateScreen(
-                                  id: 0,
-                                );
-                              }));
-                            } else {
-                              _showDialog(context, loginResult.message);
-                            }
+                        onTap: () {
+                          print("DATA NIH yaaaa");
+                          EasyLoading.show(status: 'loading...');
+                          //print("Nama =" + emailController.text);
+                          Login.connectToApi(phoneLoginController.text,
+                                  passwordLoginController.text)
+                              .then((value) {
+                            loginResult = value;
+                            setState(() {
+                              //print(storage.read(key: "token"));
+                              if (loginResult.status == 200) {
+                                _addNewItem("token", loginResult.token);
+                                _addNewItem(
+                                    "password", passwordLoginController.text);
+                                Navigator.pushReplacement(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return NavigateScreen(
+                                    id: 0,
+                                  );
+                                }));
+                              } else {
+                                _showDialog(context, loginResult.message);
+                              }
+                            });
                           });
-                        });
-                        EasyLoading.dismiss();
-                      },
-                      child: PrimaryButton(
-                        btnText: "Login",
-                        login: true,
-                      ),
-                    ),
+                          EasyLoading.dismiss();
+                        },
+                        child: Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => HomepagePeminjam()));
+                              },
+                              child: PrimaryButton(
+                                btnText: "Got To Peminjam",
+                                login: true,
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => HomepageInvestor()));
+                              },
+                              child: PrimaryButton(
+                                btnText: "Got To Investor",
+                                login: true,
+                              ),
+                            )
+                          ],
+                        )),
                     SizedBox(
                       height: 20,
                     ),

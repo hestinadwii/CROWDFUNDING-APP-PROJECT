@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:p2p/constant/color_constant.dart';
+import 'package:p2p/constants/color_constant.dart';
 
 class ProfilePage extends StatefulWidget {
  const ProfilePage({super.key});

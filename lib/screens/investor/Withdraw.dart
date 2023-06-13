@@ -2,13 +2,18 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:p2p/constants/color_constant.dart'; 
-import 'package:p2p/screens/investor/successPageWithdraw.dart'; 
-import 'package:p2p/screens/peminjam/Currency.dart'; 
+import 'package:p2p/constants/color_constant.dart';
+import 'package:p2p/screens/investor/successPageWithdraw.dart';
+import 'package:p2p/screens/peminjam/Currency.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import 'package:provider/provider.dart';
+import 'package:p2p/user_provider.dart';
+import 'package:p2p/models/api_helper_model.dart';
+import 'package:p2p/url.dart';
+
 class Withdraw extends StatefulWidget {
-   const Withdraw({super.key});
+  const Withdraw({super.key});
 
   @override
   _WithdrawState createState() => _WithdrawState();
@@ -23,8 +28,9 @@ class Bank {
 
 class _WithdrawState extends State<Withdraw> {
   int value = 0;
+  int userId = 0;
 
-  TextEditingController jumlahDana= TextEditingController();
+  TextEditingController jumlahDana = TextEditingController();
   TextEditingController nomorRekening = TextEditingController();
 
   Bank? selectedBank;
@@ -36,6 +42,24 @@ class _WithdrawState extends State<Withdraw> {
     Bank(name: 'Bank Mandiri', iconPath: 'assets/icon/Mandiri_logo.svg'),
   ];
 
+  void tarikSaldo(int userId, int jumlahDana) async {
+    final getResponse = await ApiHelper.put(
+        Url().getVal() + "/tarik_saldo/${userId}/${jumlahDana}", {});
+
+    // setState(() {
+    //   saldo = getResponse['saldo'];
+    //   print(saldo);
+    // });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    userId = userProvider.userId;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +69,7 @@ class _WithdrawState extends State<Withdraw> {
           centerTitle: true,
           title: Text('Tarik Pinjaman'),
         ),
-        
+
         //child: DefaultBackButton(),
       ),
       body: Column(
@@ -75,7 +99,7 @@ class _WithdrawState extends State<Withdraw> {
               keyboardType: TextInputType.number,
               inputFormatters: [
                 FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                CurrencyFormat(),
+                // CurrencyFormat(),
               ],
             ),
           ),
@@ -95,19 +119,18 @@ class _WithdrawState extends State<Withdraw> {
               value: selectedBank,
               items: banks.map((bank) {
                 return DropdownMenuItem<Bank>(
-                  value: bank,
-                  child: Row(
-                    children: [
-                      SvgPicture.asset(
-                        bank.iconPath,
-                        width: 24.0,
-                        height: 24.0,
-                      ),
-                      SizedBox(width: 8.0),
-                      Text(bank.name),
-                    ],
-                  )
-                );
+                    value: bank,
+                    child: Row(
+                      children: [
+                        SvgPicture.asset(
+                          bank.iconPath,
+                          width: 24.0,
+                          height: 24.0,
+                        ),
+                        SizedBox(width: 8.0),
+                        Text(bank.name),
+                      ],
+                    ));
               }).toList(),
               onChanged: (value) {
                 setState(() {
@@ -121,15 +144,14 @@ class _WithdrawState extends State<Withdraw> {
             child: TextFormField(
               controller: nomorRekening,
               decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(
-                    color: primary, // Warna border
-                    width: 2.0, // Lebar border
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(
+                      color: primary, // Warna border
+                      width: 2.0, // Lebar border
+                    ),
                   ),
-                ),
-                label: Text('Nomor Rekening')
-              ),
+                  label: Text('Nomor Rekening')),
               keyboardType: TextInputType.number,
               inputFormatters: [
                 FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
@@ -141,12 +163,14 @@ class _WithdrawState extends State<Withdraw> {
             padding: const EdgeInsets.only(bottom: 50),
             child: ElevatedButton(
               onPressed: () {
+                tarikSaldo(userId, int.parse(jumlahDana.text));
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => Success()),
                 );
               },
-              child: Text('Transfer', style: TextStyle(fontSize: 16, color: white)), 
+              child: Text('Transfer',
+                  style: TextStyle(fontSize: 16, color: white)),
               style: ElevatedButton.styleFrom(
                 backgroundColor: primary, // Warna background tombol
                 minimumSize: Size(150, 48), // Ukuran lebar tombol

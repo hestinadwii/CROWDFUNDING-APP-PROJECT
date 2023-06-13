@@ -1,7 +1,7 @@
 class Url {
-  String val = "http://apiGateway";
+  String val = "http://192.168.1.22:8000";
 
-  String getVal(){
+  String getVal() {
     return val;
   }
 }

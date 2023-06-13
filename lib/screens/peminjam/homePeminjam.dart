@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:p2p/constants/color_constant.dart';
 import 'package:p2p/screens/peminjam/Withdraw.dart';
+import 'package:p2p/models/api_helper_model.dart';
 
 // import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
@@ -24,8 +25,11 @@ class _HomePeminjamWidget extends State<HomePeminjamWidget> {
   double windowWidth = 0;
   double heighHeader = 200;
 
+  int saldo = 0;
+
   @override
   void initState() {
+    // final getResponse = ApiHelper.get(url);
     super.initState();
   }
 

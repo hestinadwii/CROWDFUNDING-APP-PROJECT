@@ -15,6 +15,9 @@ import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:p2p/screens/peminjam/HomeScreen.dart';
 import 'package:p2p/screens/investor/HomeScreen.dart';
 
+import 'package:provider/provider.dart';
+import 'package:p2p/user_provider.dart';
+
 var loginResult = Login();
 
 class LoginPage extends StatefulWidget {
@@ -187,46 +190,34 @@ class _LoginPage extends State<LoginPage> {
                             loginResult = value;
                             setState(() {
                               //print(storage.read(key: "token"));
+                              final userProvider = Provider.of<UserProvider>(
+                                  context,
+                                  listen: false);
+                              userProvider.setUserId(value.userId);
+                              userProvider.setNamaLengkap(value.namaLengkap);
+                              print(value.userId);
+                              print(value.namaLengkap);
+                              print(value.isInvestor);
                               if (loginResult.status == 200) {
-                                _addNewItem("token", loginResult.token);
-                                _addNewItem(
-                                    "password", passwordLoginController.text);
-                                Navigator.pushReplacement(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return NavigateScreen(
-                                    id: 0,
-                                  );
-                                }));
+                                if (loginResult.isInvestor == true) {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          HomepageInvestor()));
+                                } else {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          HomepagePeminjam()));
+                                }
                               } else {
-                                _showDialog(context, loginResult.message);
+                                _showDialog(context, "error");
                               }
                             });
                           });
                           EasyLoading.dismiss();
                         },
-                        child: Column(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => HomepagePeminjam()));
-                              },
-                              child: PrimaryButton(
-                                btnText: "Got To Peminjam",
-                                login: true,
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => HomepageInvestor()));
-                              },
-                              child: PrimaryButton(
-                                btnText: "Got To Investor",
-                                login: true,
-                              ),
-                            )
-                          ],
+                        child: PrimaryButton(
+                          btnText: "Login",
+                          login: true,
                         )),
                     SizedBox(
                       height: 20,

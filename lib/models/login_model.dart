@@ -4,30 +4,46 @@ import 'package:p2p/url.dart';
 // import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
-
 class Login {
-  String token;
+  int userId;
+  String username;
+  String namaLengkap;
+  String nik;
+  bool isInvestor;
   int status;
-  String message;
 
-  Login({this.token = "", this.message = "", this.status = 0});
+  Login(
+      {this.userId = 0,
+      this.username = "",
+      this.namaLengkap = "",
+      this.nik = "",
+      this.isInvestor = false,
+      this.status = 0});
 
-  factory Login.createLogin(Map<String, dynamic> object){
+  factory Login.createLogin(Map<String, dynamic> object) {
     return Login(
-        token: object['status'] == 200 ? object['token'] : "",
-        message: object['message'] != null ? object['message'] : "",
-        status: object['status'] != null ? object['status'] : 0);
+        userId: object['user_id'] != null ? object['user_id'] : 0,
+        username: object['username'] != null ? object['username'] : "",
+        namaLengkap:
+            object['nama_lengkap'] != null ? object['nama_lengkap'] : "",
+        nik: object['nik'] != null ? object['nik'] : "",
+        isInvestor: object['isInvestor'] != null ? object['isInvestor'] : false,
+        status: object['user_id'] != null ? 200 : 0);
   }
 
   static Future<Login> connectToApi(String username, String password) async {
-    String apiURL = Url().val + "api/login";
-
+    String apiURL = Url().val + "/users/sign_in/";
+    print(username);
+    print(password);
+    print(json.encode({"username": username, "password": password}));
     var apiResult = await http.post(Uri.parse(apiURL),
-    body: {"username" : username, "password" : password});
+        headers: {"Content-Type": "application/json"},
+        body: json.encode({"username": username, "password": password}),
+        encoding: Encoding.getByName("utf-8"));
     print("HHHHH" + apiResult.body);
     dynamic jsonOnject;
     jsonOnject = json.decode(apiResult.body);
-
+    print(jsonOnject['isInvestor']);
     return Login.createLogin(jsonOnject);
   }
 }

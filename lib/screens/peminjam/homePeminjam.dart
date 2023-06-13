@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:p2p/constants/color_constant.dart';
 import 'package:p2p/screens/peminjam/Withdraw.dart';
 import 'package:p2p/models/api_helper_model.dart';
+import 'package:p2p/peminjam/transaksi/riwayat_pinjaman.dart';
 
 // import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
@@ -282,26 +283,31 @@ class _HomePeminjamWidget extends State<HomePeminjamWidget> {
                     ),
                   ),
                 ),
-                Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    color: Colors.white,
-                    border: Border.all(
-                      color: primary,
-                      width: 2.0,
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      children: [
-                        Text("bayar cicilannya yaa!"),
-                      ],
-                    ),
-                  ),
-                ),
+                //   Container(
+                //   width: double.infinity,
+                //   decoration: BoxDecoration(
+                //     borderRadius: BorderRadius.all(Radius.circular(20)),
+                //     color: Colors.white,
+                //     border: Border.all(
+                //       color: primary,
+                //       width: 2.0,
+                //     ),
+                //   ),
+                //   child: Padding(
+                //     padding: const EdgeInsets.all(20.0),
+                //     child: Column(
+                //       children: [
+                //         Text("bayar cicilannya yaa!"),
+                //       ],
+                //     ),
+                //   ),
+                // ),
               ],
+            ),
+          ),
+          Expanded(child: Align(
+              alignment: Alignment.topCenter,
+              child: RiwayatPinjaman(),
             ),
           ),
         ],

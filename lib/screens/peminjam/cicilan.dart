@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:p2p/constant/color_constant.dart'; 
+import 'package:p2p/constants/color_constant.dart'; 
 import 'package:flutter/services.dart';
-import 'package:p2p/peminjam/Currency.dart'; 
+import 'package:p2p/screens/peminjam/Currency.dart'; 
 import 'package:intl/intl.dart';
 
 class BayarCicilan {

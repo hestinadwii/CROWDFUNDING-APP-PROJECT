@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:p2p/constants/color_constant.dart';
 import 'package:p2p/screens/peminjam/Withdraw.dart';
 import 'package:p2p/models/api_helper_model.dart';
-import 'package:p2p/peminjam/transaksi/riwayat_pinjaman.dart';
+import 'package:p2p/screens/peminjam/transaksi/riwayat_pinjaman.dart';
 
 // import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 

@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:p2p/constants/color_constant.dart';
 import 'package:p2p/screens/peminjam/homePeminjam.dart';
 import 'package:p2p/screens/peminjam/pengajuanPendanaan.dart';
-import 'package:p2p/peminjam/transaksi/riwayat_transaksi.dart';
-import 'package:p2p/peminjam/cicilan.dart';
+import 'package:p2p/screens/peminjam/transaksi/riwayat_transaksi.dart';
+import 'package:p2p/screens/peminjam/cicilan.dart';
 import 'package:p2p/screens/peminjam/profile.dart';
 
 class HomepagePeminjam extends StatefulWidget {

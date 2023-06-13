@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:p2p/constant/color_constant.dart'; 
+import 'package:p2p/constants/color_constant.dart';
 import 'package:intl/intl.dart';
 
 class RiwayatPinjaman extends StatelessWidget {
@@ -31,9 +31,11 @@ class RiwayatPinjaman extends StatelessWidget {
           itemCount: transactions.length,
           itemBuilder: (context, index) {
             final transaction = transactions[index];
-            final formattedDate = DateFormat('dd MMMM yyyy HH:mm').format(transaction.date); // Format tanggal
-            final formattedAmount = NumberFormat('#,##0', 'id').format(transaction.amount); // Format jumlah nominal uang
-            
+            final formattedDate = DateFormat('dd MMMM yyyy HH:mm')
+                .format(transaction.date); // Format tanggal
+            final formattedAmount = NumberFormat('#,##0', 'id')
+                .format(transaction.amount); // Format jumlah nominal uang
+
             return Container(
               width: double.infinity,
               decoration: BoxDecoration(
@@ -43,16 +45,20 @@ class RiwayatPinjaman extends StatelessWidget {
                 ),
                 borderRadius: BorderRadius.circular(20.0),
               ),
-              margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+              margin:
+                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: ListTile(
                   title: Text(transaction.title),
                   subtitle: Text(formattedDate),
-                  trailing: Text('Rp' + formattedAmount, style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 15.0,
-                  ),),
+                  trailing: Text(
+                    'Rp' + formattedAmount,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15.0,
+                    ),
+                  ),
                 ),
               ),
             );

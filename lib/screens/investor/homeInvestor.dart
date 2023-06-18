@@ -9,6 +9,7 @@ import 'package:p2p/user_provider.dart';
 import 'package:p2p/models/api_helper_model.dart';
 import 'package:p2p/url.dart';
 import 'package:intl/intl.dart';
+import 'package:p2p/investor/TopUp.dart';
 
 // import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
@@ -203,10 +204,10 @@ class _HomeInvestorWidget extends State<HomeInvestorWidget> {
                             )),
                         const SizedBox(width: 10.0),
                         GestureDetector(
-                            // onTap: () async {
-                            //   Navigator.of(context).push(MaterialPageRoute(
-                            //       builder: (context) => RegistPage()));
-                            // },
+                            onTap: () async {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => Topup()));
+                            },
                             child: Container(
                           // decoration: const BoxDecoration(
                           //   borderRadius:
@@ -239,7 +240,7 @@ class _HomeInvestorWidget extends State<HomeInvestorWidget> {
                                       )),
                                 ),
                                 Text(
-                                  "Deposit",
+                                  "Top Up",
                                   style: TextStyle(
                                     fontSize: 11.0,
                                     fontWeight: FontWeight.w500,

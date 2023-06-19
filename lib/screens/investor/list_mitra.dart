@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 // import 'package:flutter/rendering.dart';
 import 'package:p2p/constants/color_constant.dart';
 // import 'package:p2p/constants/style_constant.dart';
-import 'package:p2p/investor/porto_mitra.dart';
+import 'package:p2p/screens/investor/porto_mitra.dart';
 
 class ListMitra extends StatefulWidget {
   const ListMitra({super.key});
@@ -40,7 +40,7 @@ class _ListMitra extends State<ListMitra> {
     return Column(
       children: [
         SizedBox(
-          height: 56,
+          height: 100,
           child: Column(
             children: [
               AppBar(
@@ -48,7 +48,8 @@ class _ListMitra extends State<ListMitra> {
                 elevation: 0,
                 title: const Text(
                   'List Mitra',
-                  style: TextStyle(fontWeight: FontWeight.w500, color: mFillColor),
+                  style:
+                      TextStyle(fontWeight: FontWeight.w500, color: mFillColor),
                 ),
                 centerTitle: true,
                 actions: [
@@ -57,7 +58,6 @@ class _ListMitra extends State<ListMitra> {
                     onPressed: () {
                       showSearch(
                         context: context,
-                        
                         delegate: CustomSearchDelegate(),
                       );
                     },
@@ -135,7 +135,7 @@ class _ListMitra extends State<ListMitra> {
                                   child: _titleContainer("Lokasi"),
                                 ),
                               ),
-                              const Padding(
+                              Padding(
                                 padding: EdgeInsets.only(left: 8.0),
                                 child: Align(
                                   alignment: Alignment.centerLeft,
@@ -164,7 +164,7 @@ class _ListMitra extends State<ListMitra> {
         ),
         SingleChildScrollView(
           child: SizedBox(
-            height: windowHeight - heighHeader / 2.5,
+            height: windowHeight / 2.5,
             child: GridView(
               padding: const EdgeInsets.all(10),
               scrollDirection: Axis.vertical,

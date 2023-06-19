@@ -6,7 +6,10 @@ import 'package:p2p/screens/peminjam/Withdraw.dart';
 import 'package:p2p/models/api_helper_model.dart';
 import 'package:p2p/screens/peminjam/transaksi/riwayat_pinjaman.dart';
 import 'package:p2p/screens/peminjam/TopUp.dart';
-
+import 'package:p2p/url.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:p2p/user_provider.dart';
 // import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 // import 'package:flutter/rendering.dart';
@@ -29,16 +32,44 @@ class _HomePeminjamWidget extends State<HomePeminjamWidget> {
 
   int saldo = 0;
 
+  String namaPeminjam = "";
+
+  void getSaldo(int userId) async {
+    final getResponse =
+        await ApiHelper.get(Url().getVal() + "/saldo/${userId}");
+
+    setState(() {
+      saldo = getResponse['saldo'];
+      print(saldo);
+    });
+  }
+
+  int userId = 0;
+
   @override
   void initState() {
     // final getResponse = ApiHelper.get(url);
     super.initState();
+
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    userId = userProvider.userId;
+    namaPeminjam = userProvider.namaLengkap;
+    getSaldo(userId);
   }
 
   @override
   Widget build(BuildContext context) {
     windowHeight = MediaQuery.of(context).size.height;
     windowWidth = MediaQuery.of(context).size.width;
+
+    final currencyFormat = NumberFormat.currency(
+      locale: 'in_ID', // Ganti dengan locale yang sesuai
+      symbol: 'Rp', // Ganti dengan simbol mata uang yang sesuai
+    );
+
+    final formattedAmount = currencyFormat.format(saldo);
+
+    print(saldo);
     return Container(
       child: Column(
         children: [
@@ -57,8 +88,8 @@ class _HomePeminjamWidget extends State<HomePeminjamWidget> {
                   automaticallyImplyLeading: false,
                   backgroundColor: Colors.transparent,
                   elevation: 0,
-                  title: const Text(
-                    'Halo, Peminjam!',
+                  title: Text(
+                    'Halo, $namaPeminjam!',
                     style: TextStyle(
                         fontWeight: FontWeight.w500, color: Colors.white),
                   ),
@@ -105,7 +136,7 @@ class _HomePeminjamWidget extends State<HomePeminjamWidget> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Total Pinjaman",
+                                "Total Saldo",
                                 style: TextStyle(
                                   fontSize: 18.0,
                                   fontWeight: FontWeight.w100,
@@ -113,7 +144,7 @@ class _HomePeminjamWidget extends State<HomePeminjamWidget> {
                                 ),
                               ),
                               Text(
-                                "Rp 1.000.000",
+                                formattedAmount.toString(),
                                 style: TextStyle(
                                   fontSize: 25.0,
                                   fontWeight: FontWeight.bold,
@@ -126,8 +157,16 @@ class _HomePeminjamWidget extends State<HomePeminjamWidget> {
                         const SizedBox(width: 10.0),
                         GestureDetector(
                             onTap: () async {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => Withdraw()));
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(
+                                      builder: (context) => Withdraw()))
+                                  .then((value) {
+                                print(value);
+                                getSaldo(userId);
+                              });
+
+                              // Navigator.of(context).push(MaterialPageRoute(
+                              //     builder: (context) => Withdraw()));
                             },
                             child: Container(
                               // decoration: const BoxDecoration(
@@ -175,52 +214,58 @@ class _HomePeminjamWidget extends State<HomePeminjamWidget> {
                         const SizedBox(width: 10.0),
                         GestureDetector(
                             onTap: () async {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => Topup()));
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(
+                                      builder: (context) => Topup()))
+                                  .then((value) {
+                                print(value);
+                                getSaldo(userId);
+                              });
                             },
                             child: Container(
-                          // decoration: const BoxDecoration(
-                          //   borderRadius:
-                          //       BorderRadius.all(Radius.circular(15)),
-                          //   color: Color.fromARGB(255, 30, 107, 88),
-                          // ),
-                          height: 100,
-                          width: 70,
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white,
-                                    border: Border.all(
-                                      color: Color.fromRGBO(177, 65, 65, 1),
-                                      width: 2,
-                                    ),
-                                  ),
-                                  child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Transform.scale(
-                                        scale: 1.5,
-                                        child: Icon(
-                                          Icons.arrow_upward,
+                              // decoration: const BoxDecoration(
+                              //   borderRadius:
+                              //       BorderRadius.all(Radius.circular(15)),
+                              //   color: Color.fromARGB(255, 30, 107, 88),
+                              // ),
+                              height: 100,
+                              width: 70,
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white,
+                                        border: Border.all(
                                           color: Color.fromRGBO(177, 65, 65, 1),
+                                          width: 2,
                                         ),
-                                      )),
+                                      ),
+                                      child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Transform.scale(
+                                            scale: 1.5,
+                                            child: Icon(
+                                              Icons.arrow_upward,
+                                              color: Color.fromRGBO(
+                                                  177, 65, 65, 1),
+                                            ),
+                                          )),
+                                    ),
+                                    Text(
+                                      "Top Up",
+                                      style: TextStyle(
+                                        fontSize: 11.0,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black,
+                                      ),
+                                    )
+                                  ],
                                 ),
-                                Text(
-                                  "Top Up",
-                                  style: TextStyle(
-                                    fontSize: 11.0,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ))
+                              ),
+                            ))
                       ]),
                 )
               ],
@@ -306,7 +351,8 @@ class _HomePeminjamWidget extends State<HomePeminjamWidget> {
               ],
             ),
           ),
-          Expanded(child: Align(
+          Expanded(
+            child: Align(
               alignment: Alignment.topCenter,
               child: RiwayatPinjaman(),
             ),

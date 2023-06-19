@@ -2,12 +2,19 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:p2p/constants/color_constant.dart'; 
-import 'package:p2p/screens/peminjam/successPageWithdraw.dart'; 
-import 'package:p2p/screens/peminjam/Currency.dart'; 
+import 'package:p2p/constants/color_constant.dart';
+import 'package:p2p/screens/peminjam/successPageWithdraw.dart';
+import 'package:p2p/screens/peminjam/Currency.dart';
+
+import 'package:provider/provider.dart';
+import 'package:p2p/user_provider.dart';
+import 'package:p2p/models/api_helper_model.dart';
+import 'package:p2p/url.dart';
+
+import 'package:progress_dialog/progress_dialog.dart';
 
 class Topup extends StatefulWidget {
-   const Topup({super.key});
+  const Topup({super.key});
 
   @override
   _TopupState createState() => _TopupState();
@@ -21,8 +28,9 @@ class Bank {
 
 class _TopupState extends State<Topup> {
   int value = 0;
+  int userId = 0;
 
-  TextEditingController jumlahDana= TextEditingController();
+  TextEditingController jumlahDana = TextEditingController();
   TextEditingController nomorRekening = TextEditingController();
 
   Bank? selectedBank;
@@ -34,6 +42,38 @@ class _TopupState extends State<Topup> {
     Bank(name: 'Bank BCA'),
   ];
 
+  Future<void> delayedFunctionWithLoading() async {
+    final ProgressDialog pr = ProgressDialog(context);
+    pr.show(); // Menampilkan indikator loading
+
+    await Future.delayed(Duration(seconds: 2));
+
+    pr.hide(); // Menyembunyikan indikator loading setelah penundaan
+    // Kode setelah penundaan
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => Success()),
+    );
+  }
+
+  void topUpSaldo(int userId, int jumlahDana) async {
+    final getResponse = await ApiHelper.put(
+        Url().getVal() + "/tambah_saldo/${userId}/${jumlahDana}", {});
+
+    // setState(() {
+    //   saldo = getResponse['saldo'];
+    //   print(saldo);
+    // });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    userId = userProvider.userId;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +83,7 @@ class _TopupState extends State<Topup> {
           centerTitle: true,
           title: Text('Top Up Saldo'),
         ),
-        
+
         //child: DefaultBackButton(),
       ),
       body: Column(
@@ -73,7 +113,7 @@ class _TopupState extends State<Topup> {
               keyboardType: TextInputType.number,
               inputFormatters: [
                 FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                CurrencyFormat(),
+                // CurrencyFormat(),
               ],
             ),
           ),
@@ -93,15 +133,13 @@ class _TopupState extends State<Topup> {
               value: selectedBank,
               items: banks.map((bank) {
                 return DropdownMenuItem<Bank>(
-                  value: bank,
-                  child: Row(
-                    children: [
-                      
-                      SizedBox(width: 8.0),
-                      Text(bank.name),
-                    ],
-                  )
-                );
+                    value: bank,
+                    child: Row(
+                      children: [
+                        SizedBox(width: 8.0),
+                        Text(bank.name),
+                      ],
+                    ));
               }).toList(),
               onChanged: (value) {
                 setState(() {
@@ -115,15 +153,14 @@ class _TopupState extends State<Topup> {
             child: TextFormField(
               controller: nomorRekening,
               decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(
-                    color: primary, // Warna border
-                    width: 2.0, // Lebar border
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(
+                      color: primary, // Warna border
+                      width: 2.0, // Lebar border
+                    ),
                   ),
-                ),
-                label: Text('Nomor Rekening')
-              ),
+                  label: Text('Nomor Rekening')),
               keyboardType: TextInputType.number,
               inputFormatters: [
                 FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
@@ -135,12 +172,12 @@ class _TopupState extends State<Topup> {
             padding: const EdgeInsets.only(bottom: 50),
             child: ElevatedButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Success()),
-                );
+                topUpSaldo(userId, int.parse(jumlahDana.text));
+                
+                delayedFunctionWithLoading();
               },
-              child: Text('Top Up', style: TextStyle(fontSize: 16, color: white)), 
+              child:
+                  Text('Top Up', style: TextStyle(fontSize: 16, color: white)),
               style: ElevatedButton.styleFrom(
                 backgroundColor: primary, // Warna background tombol
                 minimumSize: Size(150, 48), // Ukuran lebar tombol

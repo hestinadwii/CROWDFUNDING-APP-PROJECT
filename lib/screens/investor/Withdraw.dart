@@ -87,7 +87,7 @@ class _WithdrawState extends State<Withdraw> {
         preferredSize: Size.fromHeight(kToolbarHeight),
         child: AppBar(
           centerTitle: true,
-          title: Text('Tarik Pinjaman'),
+          title: Text('Tarik Saldo'),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {

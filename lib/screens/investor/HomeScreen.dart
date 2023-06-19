@@ -5,8 +5,8 @@ import 'package:p2p/constants/color_constant.dart';
 import 'package:p2p/screens/investor/homeInvestor.dart';
 import 'package:p2p/screens/investor/view_rating.dart';
 import 'package:p2p/screens/investor/profile.dart';
-import 'package:p2p/investor/list_mitra.dart';
-import 'package:p2p/investor/portofolio.dart';
+import 'package:p2p/screens/investor/list_mitra.dart';
+import 'package:p2p/screens/investor/portofolio.dart';
 
 class HomepageInvestor extends StatefulWidget {
   @override

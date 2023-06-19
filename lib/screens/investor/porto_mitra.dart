@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // import 'package:flutter/rendering.dart';
 import 'package:p2p/constants/color_constant.dart';
-import 'package:p2p/investor/Currency.dart'; 
+import 'package:p2p/screens/investor/Currency.dart';
 
 class PortoMitra extends StatefulWidget {
   const PortoMitra({super.key});
@@ -15,7 +15,7 @@ class PortoMitra extends StatefulWidget {
 }
 
 class _PortoMitra extends State<PortoMitra> {
-  TextEditingController jumlahDana= TextEditingController();
+  TextEditingController jumlahDana = TextEditingController();
   double windowHeight = 0;
   double windowWidth = 0;
   double heighHeader = 250;
@@ -77,9 +77,7 @@ class _PortoMitra extends State<PortoMitra> {
                     child: Text(
                       'Rp1.000.000',
                       style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.normal
-                      ),
+                          fontSize: 18, fontWeight: FontWeight.normal),
                     ),
                   ),
                 ],
@@ -116,7 +114,8 @@ class _PortoMitra extends State<PortoMitra> {
                     //   MaterialPageRoute(builder: (context) => Success()),
                     // );
                   },
-                  child: Text('Bayar', style: TextStyle(fontSize: 16, color: white)), 
+                  child: Text('Bayar',
+                      style: TextStyle(fontSize: 16, color: white)),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: primary, // Warna background tombol
                     minimumSize: Size(150, 48), // Ukuran lebar tombol
@@ -142,7 +141,7 @@ class _PortoMitra extends State<PortoMitra> {
     return Column(
       children: [
         SizedBox(
-          height: 56,
+          height: 100,
           child: Column(
             children: [
               AppBar(
@@ -150,7 +149,8 @@ class _PortoMitra extends State<PortoMitra> {
                 elevation: 0,
                 title: const Text(
                   'Detail Mitra',
-                  style: TextStyle(fontWeight: FontWeight.w500, color: mFillColor),
+                  style:
+                      TextStyle(fontWeight: FontWeight.w500, color: mFillColor),
                 ),
                 centerTitle: true,
               ),
@@ -159,7 +159,7 @@ class _PortoMitra extends State<PortoMitra> {
         ),
         SingleChildScrollView(
           child: SizedBox(
-            height: windowHeight - heighHeader + 150,
+            height: windowHeight - 100,
             child: Padding(
               padding: EdgeInsets.only(left: 18, right: 18, top: 18),
               child: Column(
@@ -180,17 +180,16 @@ class _PortoMitra extends State<PortoMitra> {
                       //   ),
                       // ),
                       const SizedBox(width: 10),
-                      const Row(
+                      Row(
                         children: [
                           Column(
                             children: [
                               Text(
                                 "Pendanaan Pedagang Kelontong",
                                 style: TextStyle(
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black
-                                ),
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
                               ),
                             ],
                           ),
@@ -223,18 +222,18 @@ class _PortoMitra extends State<PortoMitra> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                         longText,
-                         textAlign: TextAlign.justify,
-                          overflow: TextOverflow.visible, // Menampilkan ... jika teks terlalu panjang
-                          maxLines: 20, // Batasi jumlah baris teks yang ditampilkan
+                          longText,
+                          textAlign: TextAlign.justify,
+                          overflow: TextOverflow
+                              .visible, // Menampilkan ... jika teks terlalu panjang
+                          maxLines:
+                              20, // Batasi jumlah baris teks yang ditampilkan
                           style: TextStyle(
                             fontSize: 14.0,
                             fontWeight: FontWeight.w100,
                             color: Colors.black,
                           ),
-                          
                         ),
-                        
                       ],
                     ),
                   ),
@@ -290,7 +289,6 @@ class _PortoMitra extends State<PortoMitra> {
                             "12 Bulan",
                             textAlign: TextAlign.right,
                             style: TextStyle(
-                              
                               fontSize: 18.0,
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
@@ -306,8 +304,8 @@ class _PortoMitra extends State<PortoMitra> {
                       padding: const EdgeInsets.only(right: 10, left: 10),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
-                       children: [
-                        Text(
+                        children: [
+                          Text(
                             "Dana Terkumpul",
                             style: TextStyle(
                               fontSize: 18.0,
@@ -315,31 +313,33 @@ class _PortoMitra extends State<PortoMitra> {
                               color: Colors.black,
                             ),
                           ),
-                        const SizedBox(height: 12),
-                        LinearProgressIndicator(
-                          value: 0.75,
-                          minHeight: 25,
-                          backgroundColor: Colors.grey,
-                          valueColor: AlwaysStoppedAnimation<Color>(primary),
-                        ),
-                        SizedBox(height: 16),
-                        Text(
-                          'Rp 500.000',
-                          style: TextStyle(fontSize: 16.0, color: Colors.black),
-                        ),
-                      ],
+                          const SizedBox(height: 12),
+                          LinearProgressIndicator(
+                            value: 0.75,
+                            minHeight: 25,
+                            backgroundColor: Colors.grey,
+                            valueColor: AlwaysStoppedAnimation<Color>(primary),
+                          ),
+                          SizedBox(height: 16),
+                          Text(
+                            'Rp 500.000',
+                            style:
+                                TextStyle(fontSize: 16.0, color: Colors.black),
+                          ),
+                        ],
                       ),
                     ),
                   ),
                   Spacer(), // Spacer untuk mengatur posisi tombol submit di bagian bawah
                   Center(
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 100),
+                      padding: const EdgeInsets.only(top: 10),
                       child: ElevatedButton(
                         onPressed: () {
                           _showPaymentDetails();
                         },
-                        child: Text('Danai Mitra', style: TextStyle(fontSize: 16, color: white)), 
+                        child: Text('Danai Mitra',
+                            style: TextStyle(fontSize: 16, color: white)),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: primary, // Warna background tombol
                           minimumSize: Size(150, 48), // Ukuran lebar tombol

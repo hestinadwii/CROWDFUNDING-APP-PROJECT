@@ -1,11 +1,10 @@
-
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:p2p/peminjam/currency.dart';
+import 'package:p2p/screens/peminjam/currency.dart';
 import 'package:p2p/constants/color_constant.dart';
-import 'package:p2p/peminjam/successPage.dart';
+import 'package:p2p/screens/peminjam/successPage.dart';
 import 'package:intl/intl.dart';
 
 class Activity {
@@ -47,11 +46,10 @@ class _PengajuanPendanaanState extends State<PengajuanPendanaan>
 
   List<Activity> activities = [
     Activity(
-      title: 'Pendanaan Pedagang Kelontong',
-      amount: 2500000,
-      date: DateTime(2022, 5, 1),
-      gatheredMoney: 100000
-    ),
+        title: 'Pendanaan Pedagang Kelontong',
+        amount: 2500000,
+        date: DateTime(2022, 5, 1),
+        gatheredMoney: 100000),
     Activity(
       title: 'Pendanaan Pedagang Gorengan',
       amount: 1500000,
@@ -270,47 +268,57 @@ class _PengajuanPendanaanState extends State<PengajuanPendanaan>
             //   },
             // ),
             child: Scaffold(
-            body: ListView.builder(
-              shrinkWrap: true,
-              itemCount: activities.length,
-              itemBuilder: (context, index) {
-                final transaction = activities[index];
-                final formattedDate = DateFormat('dd MMMM yyyy').format(transaction.date); // Format tanggal
-                final formattedAmount = NumberFormat('#,##0', 'id').format(transaction.amount); // Format jumlah nominal uang
-                final formattedAmount2 = NumberFormat('#,##0', 'id').format(transaction.gatheredMoney);
-                return Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: primary,
-                      width: 2.0,
+              body: ListView.builder(
+                shrinkWrap: true,
+                itemCount: activities.length,
+                itemBuilder: (context, index) {
+                  final transaction = activities[index];
+                  final formattedDate = DateFormat('dd MMMM yyyy')
+                      .format(transaction.date); // Format tanggal
+                  final formattedAmount = NumberFormat('#,##0', 'id')
+                      .format(transaction.amount); // Format jumlah nominal uang
+                  final formattedAmount2 = NumberFormat('#,##0', 'id')
+                      .format(transaction.gatheredMoney);
+                  return Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: primary,
+                        width: 2.0,
+                      ),
+                      borderRadius: BorderRadius.circular(20.0),
                     ),
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                  child: Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: ListTile(
-                      title: Text(transaction.title),
-                      subtitle: Text(formattedDate),
-                      trailing: Column(
-                        children: [
-                          Text('Pengajuan Dana:' + 'Rp' + formattedAmount, style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 15.0,
-                          ),),
-                          Text('Dana Terkumpul:' + 'Rp' + formattedAmount2, style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 15.0,
-                          ),),
-                        ],
+                    margin: const EdgeInsets.symmetric(
+                        vertical: 10.0, horizontal: 10.0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: ListTile(
+                        title: Text(transaction.title),
+                        subtitle: Text(formattedDate),
+                        trailing: Column(
+                          children: [
+                            Text(
+                              'Pengajuan Dana:' + 'Rp' + formattedAmount,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 15.0,
+                              ),
+                            ),
+                            Text(
+                              'Dana Terkumpul:' + 'Rp' + formattedAmount2,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 15.0,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
-          ),
           ),
         ],
       ),

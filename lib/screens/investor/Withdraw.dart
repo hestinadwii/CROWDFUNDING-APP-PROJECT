@@ -68,6 +68,12 @@ class _WithdrawState extends State<Withdraw> {
         child: AppBar(
           centerTitle: true,
           title: Text('Tarik Pinjaman'),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
         ),
 
         //child: DefaultBackButton(),
@@ -164,10 +170,13 @@ class _WithdrawState extends State<Withdraw> {
             child: ElevatedButton(
               onPressed: () {
                 tarikSaldo(userId, int.parse(jumlahDana.text));
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Success()),
-                );
+                Future.delayed(Duration(seconds: 1), () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => Success()),
+                  );
+                });
+                // Navigator.pop(context, "test");
               },
               child: Text('Transfer',
                   style: TextStyle(fontSize: 16, color: white)),

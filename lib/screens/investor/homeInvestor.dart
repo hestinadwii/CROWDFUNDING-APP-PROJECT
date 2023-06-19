@@ -155,8 +155,13 @@ class _HomeInvestorWidget extends State<HomeInvestorWidget> {
                         const SizedBox(width: 10.0),
                         GestureDetector(
                             onTap: () async {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => Withdraw()));
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(
+                                      builder: (context) => Withdraw()))
+                                  .then((value) {
+                                print(value);
+                                getSaldo(userId);
+                              });
                             },
                             child: Container(
                               // decoration: const BoxDecoration(

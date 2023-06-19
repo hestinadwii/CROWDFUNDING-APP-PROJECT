@@ -12,6 +12,10 @@ import 'package:p2p/user_provider.dart';
 import 'package:p2p/models/api_helper_model.dart';
 import 'package:p2p/url.dart';
 
+import 'package:progress_dialog/progress_dialog.dart';
+
+typedef NavigatorCallback = void Function(BuildContext context);
+
 class Withdraw extends StatefulWidget {
   const Withdraw({super.key});
 
@@ -41,6 +45,22 @@ class _WithdrawState extends State<Withdraw> {
     Bank(name: 'Bank BCA', iconPath: 'assets/icon/BCA_logo.svg'),
     Bank(name: 'Bank Mandiri', iconPath: 'assets/icon/Mandiri_logo.svg'),
   ];
+
+  Future<void> delayedFunctionWithLoading() async {
+    final ProgressDialog pr = ProgressDialog(context);
+    pr.show(); // Menampilkan indikator loading
+
+    await Future.delayed(Duration(seconds: 2));
+
+    pr.hide(); // Menyembunyikan indikator loading setelah penundaan
+    // Kode setelah penundaan
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Success(),
+      ),
+    );
+  }
 
   void tarikSaldo(int userId, int jumlahDana) async {
     final getResponse = await ApiHelper.put(
@@ -170,12 +190,8 @@ class _WithdrawState extends State<Withdraw> {
             child: ElevatedButton(
               onPressed: () {
                 tarikSaldo(userId, int.parse(jumlahDana.text));
-                Future.delayed(Duration(seconds: 1), () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => Success()),
-                  );
-                });
+                delayedFunctionWithLoading();
+
                 // Navigator.pop(context, "test");
               },
               child: Text('Transfer',

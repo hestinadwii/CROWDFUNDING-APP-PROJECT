@@ -31,11 +31,10 @@ class _SuccessState extends State<Success> {
     return Scaffold(
         backgroundColor: kWhiteColor,
         appBar: AppBar(
-        automaticallyImplyLeading: false, // Menghilangkan tombol back di AppBar
-      ),
-        body: 
-        Column(mainAxisAlignment: MainAxisAlignment.center, 
-        children: [
+          automaticallyImplyLeading:
+              false, // Menghilangkan tombol back di AppBar
+        ),
+        body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Column(
             // ignore: prefer_const_literals_to_create_immutables
             children: [
@@ -47,12 +46,14 @@ class _SuccessState extends State<Success> {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 10.0),
-                child: Text('Dana Berhasil Terkirim!',
+                child: Text(
+                  'Dana Berhasil Terkirim!',
                   style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black,
-                ),),
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black,
+                  ),
+                ),
               ),
             ],
           ),
@@ -60,8 +61,8 @@ class _SuccessState extends State<Success> {
           ElevatedButton(
             child: Text('Kembali ke Home'),
             onPressed: () {
-            
-          },
+              Navigator.pop(context);
+            },
           ),
         ]));
   }

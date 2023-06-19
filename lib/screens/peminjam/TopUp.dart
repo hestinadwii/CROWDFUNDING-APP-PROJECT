@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:p2p/constants/color_constant.dart'; 
-import 'package:p2p/peminjam/successPageWithdraw.dart'; 
-import 'package:p2p/peminjam/Currency.dart'; 
+import 'package:p2p/screens/peminjam/successPageWithdraw.dart'; 
+import 'package:p2p/screens/peminjam/Currency.dart'; 
 
 class Topup extends StatefulWidget {
    const Topup({super.key});

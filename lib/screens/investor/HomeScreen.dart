@@ -5,6 +5,8 @@ import 'package:p2p/constants/color_constant.dart';
 import 'package:p2p/screens/investor/homeInvestor.dart';
 import 'package:p2p/screens/investor/view_rating.dart';
 import 'package:p2p/screens/investor/profile.dart';
+import 'package:p2p/investor/list_mitra.dart';
+import 'package:p2p/investor/portofolio.dart';
 
 class HomepageInvestor extends StatefulWidget {
   @override
@@ -17,8 +19,8 @@ class _HomepageInvestor extends State<HomepageInvestor> {
   final List<Widget> _children = [
     // TODO: Ganti widget dengan halaman yang sesuai
     HomeInvestorWidget(),
-    HomeInvestorWidget(),
-    HomeInvestorWidget(),
+    ListMitra(),
+    Portofolio(),
     viewRating(),
     ProfilePage(),
   ];

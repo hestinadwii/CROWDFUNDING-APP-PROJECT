@@ -8,6 +8,15 @@ import 'package:p2p/constants/color_constant.dart';
 import 'package:p2p/screens/investor/Currency.dart';
 import 'package:intl/intl.dart';
 
+import 'package:provider/provider.dart';
+import 'package:p2p/user_provider.dart';
+import 'package:p2p/models/api_helper_model.dart';
+import 'package:p2p/url.dart';
+import 'package:intl/intl.dart';
+import 'package:p2p/screens/peminjam/successPage.dart';
+
+import 'package:progress_dialog/progress_dialog.dart';
+
 class PortoMitra extends StatefulWidget {
   final data;
   const PortoMitra({super.key, required this.data});
@@ -25,7 +34,11 @@ class _PortoMitra extends State<PortoMitra> {
   double windowHeight = 0;
   double windowWidth = 0;
   double heighHeader = 250;
-  final String longText = '''
+
+  int userId = 0;
+  int saldo = 0;
+
+  String longText = '''
   Ahmad adalah seorang pengusaha muda yang menjalankan bisnis makanan jalanan yang populer di tengah kota. Ahmad bercita-cita untuk memperluas bisnisnya dengan membuka beberapa gerai baru di berbagai lokasi strategis. Namun, untuk mewujudkan ambisinya, dia menyadari bahwa dia membutuhkan modal tambahan. Dia memutuskan untuk mencari pinjaman untuk membantu mewujudkan rencananya. Dengan pinjaman tersebut, Ahmad dapat membeli perlengkapan baru, menyewa tambahan tenaga kerja, dan memperluas area operasionalnya.''';
 
   List<String> gambar = [
@@ -34,14 +47,61 @@ class _PortoMitra extends State<PortoMitra> {
     "assets/images/pengajuan_dana.jpg",
   ];
 
+  Future<void> delayedFunctionWithLoading() async {
+    final ProgressDialog pr = ProgressDialog(context);
+    pr.show(); // Menampilkan indikator loading
+
+    await Future.delayed(Duration(seconds: 2));
+
+    pr.hide(); // Menyembunyikan indikator loading setelah penundaan
+    // Kode setelah penundaan
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => Success()),
+    );
+  }
+
+  void addPlegde(int campaignId, int jumlahDana) async {
+    DateTime today = DateTime.now();
+
+    final data = {
+      "campaign_id": campaignId,
+      "jumlah": jumlahDana,
+    };
+
+    final getResponse =
+        await ApiHelper.post(Url().getVal() + "/pledge/${userId}", data);
+  }
+
+  void getSaldo(int userId) async {
+    final getResponse =
+        await ApiHelper.get(Url().getVal() + "/saldo/${userId}");
+
+    setState(() {
+      saldo = getResponse['saldo'];
+      print(saldo);
+    });
+  }
+
   @override
   void initState() {
     super.initState();
 
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    userId = userProvider.userId;
+
+    getSaldo(userId);
     print(data["judul"]);
+    longText = '''${data["deskripsi"]}''';
   }
 
   void _showPaymentDetails() {
+    final currencyFormat = NumberFormat.currency(
+      locale: 'in_ID', // Ganti dengan locale yang sesuai
+      symbol: 'Rp', // Ganti dengan simbol mata uang yang sesuai
+    );
+
+    final formattedAmount = currencyFormat.format(saldo);
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
@@ -88,7 +148,7 @@ class _PortoMitra extends State<PortoMitra> {
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Text(
-                      'Rp1.000.000',
+                      formattedAmount,
                       style: TextStyle(
                           fontSize: 18, fontWeight: FontWeight.normal),
                     ),
@@ -122,10 +182,9 @@ class _PortoMitra extends State<PortoMitra> {
                 padding: const EdgeInsets.only(bottom: 20),
                 child: ElevatedButton(
                   onPressed: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => Success()),
-                    // );
+                    addPlegde(data["campaign_id"],
+                        int.parse(jumlahDana.text.replaceAll(".", "")));
+                    delayedFunctionWithLoading();
                   },
                   child: Text('Bayar',
                       style: TextStyle(fontSize: 16, color: white)),

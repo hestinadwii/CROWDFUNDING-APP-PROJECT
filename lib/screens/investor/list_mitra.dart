@@ -3,6 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:p2p/constants/color_constant.dart';
 // import 'package:p2p/constants/style_constant.dart';
 import 'package:p2p/screens/investor/porto_mitra.dart';
+import 'package:provider/provider.dart';
+import 'package:p2p/user_provider.dart';
+import 'package:p2p/models/api_helper_model.dart';
+import 'package:p2p/url.dart';
+import 'package:intl/intl.dart';
+
+import 'package:progress_dialog/progress_dialog.dart';
 
 class ListMitra extends StatefulWidget {
   const ListMitra({super.key});
@@ -16,6 +23,8 @@ class _ListMitra extends State<ListMitra> {
   double windowWidth = 0;
   double heighHeader = 300;
 
+  var data = [];
+
   List<String> chipListUrut = [
     "Terbaik",
     "Terbaru",
@@ -28,9 +37,40 @@ class _ListMitra extends State<ListMitra> {
     "Kuliner",
   ];
 
+  void getAllCampaigns() async {
+    final getResponse = await ApiHelper.getList(Url().getVal() + "/campaigns/");
+
+    setState(() {
+      data = getResponse;
+      print(getResponse);
+    });
+  }
+
+  List<CardWithImg> listMitra() {
+    List<CardWithImg> list = [];
+    for (Map<String, dynamic> campaign in data) {
+      CardWithImg card = CardWithImg(
+        pathFile: "assets/images/user_agreement.jpg",
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => PortoMitra(
+                    data: campaign,
+                  )));
+        },
+        nama: campaign["judul"],
+        danaTerkumpul: campaign["dana_terkumpul"],
+      );
+
+      list.add(card);
+    }
+
+    return list;
+  }
+
   @override
   void initState() {
     super.initState();
+    getAllCampaigns();
   }
 
   @override
@@ -175,24 +215,7 @@ class _ListMitra extends State<ListMitra> {
                 mainAxisSpacing: 10,
                 crossAxisSpacing: 10,
               ),
-              children: [
-                CardWithImg(
-                  pathFile: "assets/images/user_agreement.jpg",
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const PortoMitra()));
-                  },
-                  nama: "Pendanaan Pedagang Kelontong",
-                ),
-                CardWithImg(
-                  pathFile: "assets/images/user_agreement.jpg",
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const PortoMitra()));
-                  },
-                  nama: "Pendanaan Penjual Sayuran",
-                ),
-              ],
+              children: listMitra(),
             ),
           ),
         )
@@ -360,12 +383,22 @@ class CardWithImg extends StatelessWidget {
   final String pathFile;
   final VoidCallback onTap;
   final String nama;
+  int danaTerkumpul = 0;
 
   CardWithImg(
-      {required this.pathFile, required this.onTap, required this.nama});
+      {required this.pathFile,
+      required this.onTap,
+      required this.nama,
+      required this.danaTerkumpul});
 
   @override
   Widget build(BuildContext context) {
+    final currencyFormat = NumberFormat.currency(
+      locale: 'in_ID', // Ganti dengan locale yang sesuai
+      symbol: 'Rp', // Ganti dengan simbol mata uang yang sesuai
+    );
+
+    final formattedAmount = currencyFormat.format(danaTerkumpul);
     return Container(
       height: 200,
       decoration: BoxDecoration(
@@ -431,7 +464,7 @@ class CardWithImg extends StatelessWidget {
                   ),
                   SizedBox(height: 4),
                   Text(
-                    'Rp 1.000.000',
+                    formattedAmount,
                     style: TextStyle(
                       fontSize: 12,
                       color: Colors.white70,

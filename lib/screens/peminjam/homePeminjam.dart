@@ -31,8 +31,32 @@ class _HomePeminjamWidget extends State<HomePeminjamWidget> {
   double heighHeader = 200;
 
   int saldo = 0;
+  int danaTerkumpul = 0;
+  int targetDana = 0;
+  int status = 0;
 
   String namaPeminjam = "";
+
+  void getCampaign(int userId) async {
+    final getResponse =
+        await ApiHelper.get(Url().getVal() + "/campaign/get/${userId}");
+
+    setState(() {
+      danaTerkumpul = getResponse['dana_terkumpul'];
+      targetDana = getResponse['target_dana'];
+      print(danaTerkumpul);
+    });
+  }
+
+  void getStatusCampaign(int userId) async {
+    final getResponse =
+        await ApiHelper.get(Url().getVal() + "/campaign/status/${userId}");
+
+    setState(() {
+      status = getResponse['status'];
+      print(status);
+    });
+  }
 
   void getSaldo(int userId) async {
     final getResponse =
@@ -42,6 +66,34 @@ class _HomePeminjamWidget extends State<HomePeminjamWidget> {
       saldo = getResponse['saldo'];
       print(saldo);
     });
+  }
+
+  Column statusPengajuan(int state) {
+    Column temp;
+
+    final currencyFormat = NumberFormat.currency(
+      locale: 'in_ID', // Ganti dengan locale yang sesuai
+      symbol: 'Rp', // Ganti dengan simbol mata uang yang sesuai
+    );
+
+    final formattedAmount = currencyFormat.format(danaTerkumpul);
+    final formattedAmount2 = currencyFormat.format(targetDana);
+
+    if (state == 0) {
+      temp = Column(
+        children: [Text("Menunggu Verifikasi")],
+      );
+    } else {
+      temp = Column(
+        children: [
+          Text("Pengajuan Dana Diterima"),
+          Text("Target Dana: $formattedAmount2"),
+          Text("Dana Terkumpul: $formattedAmount")
+        ],
+      );
+    }
+
+    return temp;
   }
 
   int userId = 0;
@@ -55,6 +107,8 @@ class _HomePeminjamWidget extends State<HomePeminjamWidget> {
     userId = userProvider.userId;
     namaPeminjam = userProvider.namaLengkap;
     getSaldo(userId);
+    getCampaign(userId);
+    getStatusCampaign(userId);
   }
 
   @override
@@ -300,13 +354,8 @@ class _HomePeminjamWidget extends State<HomePeminjamWidget> {
                     ),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      children: [
-                        Text("ini buat status"),
-                      ],
-                    ),
-                  ),
+                      padding: const EdgeInsets.all(20.0),
+                      child: statusPengajuan(status)),
                 ),
               ],
             ),

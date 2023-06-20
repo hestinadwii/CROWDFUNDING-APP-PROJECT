@@ -6,15 +6,21 @@ import 'package:flutter/services.dart';
 // import 'package:flutter/rendering.dart';
 import 'package:p2p/constants/color_constant.dart';
 import 'package:p2p/screens/investor/Currency.dart';
+import 'package:intl/intl.dart';
 
 class PortoMitra extends StatefulWidget {
-  const PortoMitra({super.key});
+  final data;
+  const PortoMitra({super.key, required this.data});
 
   @override
-  State<PortoMitra> createState() => _PortoMitra();
+  State<PortoMitra> createState() => _PortoMitra(data: data);
 }
 
 class _PortoMitra extends State<PortoMitra> {
+  Map<String, dynamic> data;
+
+  _PortoMitra({required this.data});
+
   TextEditingController jumlahDana = TextEditingController();
   double windowHeight = 0;
   double windowWidth = 0;
@@ -27,6 +33,13 @@ class _PortoMitra extends State<PortoMitra> {
     "assets/images/informasi_produk.jpg",
     "assets/images/pengajuan_dana.jpg",
   ];
+
+  @override
+  void initState() {
+    super.initState();
+
+    print(data["judul"]);
+  }
 
   void _showPaymentDetails() {
     showModalBottomSheet(
@@ -50,7 +63,7 @@ class _PortoMitra extends State<PortoMitra> {
               ),
               SizedBox(height: 16),
               Text(
-                'Pendanaan Mitra',
+                data["judul"],
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -129,13 +142,21 @@ class _PortoMitra extends State<PortoMitra> {
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
+    final currencyFormat = NumberFormat.currency(
+      locale: 'in_ID', // Ganti dengan locale yang sesuai
+      symbol: 'Rp', // Ganti dengan simbol mata uang yang sesuai
+    );
+
+    final formattedAmount = currencyFormat.format(data["target_dana"]);
+    final formattedAmount2 = currencyFormat.format(data["dana_terkumpul"]);
+
     windowHeight = MediaQuery.of(context).size.height;
     windowWidth = MediaQuery.of(context).size.width;
     return Column(
@@ -185,7 +206,7 @@ class _PortoMitra extends State<PortoMitra> {
                           Column(
                             children: [
                               Text(
-                                "Pendanaan Pedagang Kelontong",
+                                data["judul"],
                                 style: TextStyle(
                                     fontSize: 16.0,
                                     fontWeight: FontWeight.bold,
@@ -201,7 +222,7 @@ class _PortoMitra extends State<PortoMitra> {
                     items: gambar
                         .map((item) => Container(
                               child: Center(
-                                child: Image.network(
+                                child: Image.asset(
                                   item,
                                   fit: BoxFit.cover,
                                   width: 1000,
@@ -255,7 +276,7 @@ class _PortoMitra extends State<PortoMitra> {
                         ),
                         Expanded(
                           child: Text(
-                            "Rp 1.000.000",
+                            formattedAmount,
                             textAlign: TextAlign.right,
                             style: TextStyle(
                               fontSize: 18.0,
@@ -286,7 +307,7 @@ class _PortoMitra extends State<PortoMitra> {
                         const SizedBox(width: 6),
                         Expanded(
                           child: Text(
-                            "12 Bulan",
+                            "${data["tenor"]} Bulan",
                             textAlign: TextAlign.right,
                             style: TextStyle(
                               fontSize: 18.0,
@@ -315,14 +336,14 @@ class _PortoMitra extends State<PortoMitra> {
                           ),
                           const SizedBox(height: 12),
                           LinearProgressIndicator(
-                            value: 0.75,
+                            value: data["dana_terkumpul"] / data["target_dana"],
                             minHeight: 25,
                             backgroundColor: Colors.grey,
                             valueColor: AlwaysStoppedAnimation<Color>(primary),
                           ),
                           SizedBox(height: 16),
                           Text(
-                            'Rp 500.000',
+                            formattedAmount2,
                             style:
                                 TextStyle(fontSize: 16.0, color: Colors.black),
                           ),

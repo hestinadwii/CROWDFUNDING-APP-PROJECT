@@ -15,6 +15,18 @@ class ApiHelper {
     }
   }
 
+  static Future<List<dynamic>> getList(String url) async {
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      // Mengonversi data JSON menjadi Map
+      final jsonResponse = json.decode(response.body);
+      return jsonResponse;
+    } else {
+      throw Exception('Failed to load data from API');
+    }
+  }
+
   static Future<Map<String, dynamic>> put(
       String url, Map<String, dynamic> data) async {
     final response = await http.put(

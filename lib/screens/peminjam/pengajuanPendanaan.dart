@@ -1,11 +1,19 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
+import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:p2p/screens/peminjam/currency.dart';
 import 'package:p2p/constants/color_constant.dart';
 import 'package:p2p/screens/peminjam/successPage.dart';
 import 'package:intl/intl.dart';
+
+import 'package:provider/provider.dart';
+import 'package:p2p/user_provider.dart';
+import 'package:p2p/models/api_helper_model.dart';
+import 'package:p2p/url.dart';
+
+import 'package:progress_dialog/progress_dialog.dart';
 
 class Activity {
   final String title;
@@ -38,6 +46,7 @@ class _PengajuanPendanaanState extends State<PengajuanPendanaan>
 //   double windowHeight = 0;
 //   double windowWidth = 0;
   int value = 0;
+  int userId = 0;
   String selectedTenor = 'Mingguan';
   List<String> jenisAngsuran = [
     'Mingguan',
@@ -67,10 +76,46 @@ class _PengajuanPendanaanState extends State<PengajuanPendanaan>
   TextEditingController tanggalSelesai = TextEditingController();
   TextEditingController tenor = TextEditingController();
 
+  Future<void> delayedFunctionWithLoading() async {
+    final ProgressDialog pr = ProgressDialog(context);
+    pr.show(); // Menampilkan indikator loading
+
+    await Future.delayed(Duration(seconds: 2));
+
+    pr.hide(); // Menyembunyikan indikator loading setelah penundaan
+    // Kode setelah penundaan
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => Success()),
+    );
+  }
+
+  void addCampaign(String judul, String deskripsi, int jumlahDana,
+      String tanggalSelesai, int tenor) async {
+    DateTime today = DateTime.now();
+
+    final data = {
+      "judul": judul,
+      "deskripsi": deskripsi,
+      "target_dana": jumlahDana,
+      "tanggal_mulai": "${today.day}/${today.month}/${today.year}",
+      "tanggal_selesai": tanggalSelesai,
+      "tenor": 50,
+      "dana_terkumpul": 0,
+      "bagi_hasil": 12.5
+    };
+
+    final getResponse =
+        await ApiHelper.post(Url().getVal() + "/campaigns/${userId}", data);
+  }
+
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    userId = userProvider.userId;
   }
 
   @override
@@ -207,6 +252,7 @@ class _PengajuanPendanaanState extends State<PengajuanPendanaan>
                     if (pickedDate != null) {
                       setState(() {
                         tanggalSelesai.text = _formatDate(pickedDate);
+                        print(tanggalSelesai.text);
                       });
                     }
                   },
@@ -241,10 +287,14 @@ class _PengajuanPendanaanState extends State<PengajuanPendanaan>
                 SizedBox(height: 20.0),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Success()),
-                    );
+                    print(jumlahDana.text.replaceAll(".", ""));
+                    addCampaign(
+                        judul.text,
+                        deskripsi.text,
+                        int.parse(jumlahDana.text.replaceAll(".", "")),
+                        tanggalSelesai.text,
+                        50);
+                    delayedFunctionWithLoading();
                   },
                   child: Text(
                     'Submit',
